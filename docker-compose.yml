@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  api-vimall:
+    build:
+      context: .              # Thư mục chứa Dockerfile (tại thư mục gốc)
+      dockerfile: Dockerfile  # Đường dẫn tới Dockerfile nếu nó nằm trong thư mục `src`
+    ports:
+      - "1000:1000"           # Mở cổng 1000 trên máy chủ và ánh xạ với cổng 1000 trong container
+    volumes:
+      - .:/code/real-time-chat    # Đồng bộ thư mục hiện tại vào container, giúp dễ dàng phát triển
+      - /code/real-time-chat/node_modules
+    # environment:
+    #   - NODE_ENV=production   # Thiết lập biến môi trường để xác định chế độ chạy của ứng dụng
+
