@@ -19,11 +19,9 @@ io.on("connection", (socket) => {
   console.log('connection');
 
   socket.on("send_message_test", (data) => {
-    // gửi socket đến room chat
-    // gửi thông báo tin nhắn
     io.emit("receive_message_test", data);
-    console.log(data);
   });
+
   //  vào room chat nào đó trong message
   socket.on("join_room_chat", (data) => {
     // thêm người dùng vào room
@@ -42,13 +40,13 @@ io.on("connection", (socket) => {
   socket.on("disconnect_chat", () => {
     console.log("A user disconnected");
   });
+
+  socket.on("noti_page_send", (data) => {
+    io.emit("noti_page_recive",data);
+  });
 });
 
-app.get("/", (req, res) => {
-  const message = "Anh yêu em ❤️";
-  io.to("11_17").emit("send_message", { userId: 11, message });
-  res.send("Message sent to all connected clients.");
-});
+
 
 server.listen(1000, () => {
   console.log("Listening on *:1000");
