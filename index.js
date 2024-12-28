@@ -3,23 +3,30 @@ const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-
+const { Expo } = require("expo-server-sdk");
+const expo = new Expo();
 app.use(cors());
+
+app.use(express.json());
 
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
 
 io.on("connection", (socket) => {
-  console.log('connection');
-
+  console.log("connection");
+  //  chat
   socket.on("send_message_test", (data) => {
     io.emit("receive_message_test", data);
+  });
+
+  socket.on("send_message_test_fetch", (data) => {
+    io.emit("receive_message_test_fetch", data);
   });
 
   //  vào room chat nào đó trong message
@@ -36,17 +43,16 @@ io.on("connection", (socket) => {
     io.emit("receive_message", data);
     console.log(data);
   });
-  
+
   socket.on("disconnect_chat", () => {
     console.log("A user disconnected");
   });
 
+  // share
   socket.on("noti_page_send", (data) => {
-    io.emit("noti_page_recive",data);
+    io.emit("noti_page_recive", data);
   });
 });
-
-
 
 server.listen(1000, () => {
   console.log("Listening on *:1000");
